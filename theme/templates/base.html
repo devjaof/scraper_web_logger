@@ -2,34 +2,56 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-    <title>Django Tailwind</title>
+    <title>Gimme PDFs</title>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+      html{font-family:Verdana, Geneva, sans-serif;}
+    </style>
 		{% tailwind_css %}
 	</head>
 
-	<body class="bg-gray-50 font-serif leading-normal tracking-normal">
-		<div class="container mx-auto">
-      <section clasa="">
+	<body class="bg-gray-50 h-dvh p-4">
+    <h1 class="text-center font-bold text-green-700 text-[42px]">Gimme PDFs</h1>
+		<div class="flex flex-col items-center justify-around h-[80%]">
+      <section class="w-[60%]">
         <form method="post" action="{% url 'scrape' %}">
           {% csrf_token %}
-          <input type="text" name="url" placeholder="Enter URL here..." className="p-1 border-none radius-2">
+          <div class="flex flex-col w-full gap-2">
+            <input type="text" name="url" class="rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-0" placeholder="Enter URL">
+            <input type="text" name="keywords" class="rounded-md px-3 py-2 placeholder-gray-400 focus:outline-none focus:ring-0" placeholder="Enter keywords">
 
-          <button type="submit">Scrape</button>
-        </form>
-
-        <br>
-
-        {% if messages %}
-          <div class="log-messages">
-            {% for message in messages %}
-              <p>{{ message }}</p>
-            {% endfor %}
+            <button type="submit" class="bg-green-700 text-white rounded-md p-2">Search</button>
           </div>
-        {% endif %}
+        </form>
       </section>
 
+      {% if loading %}
+      <div class="w-[50%] h-24 flex items-center justify-center">
+        <div class="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24">
+
+        </div>
+      </div>
+      {% endif %}
+
+      <section class="w-[70%] h-72 grid grid-cols-6">
+        <div class="col-span-4">
+          <div class="w-full h-full bg-gray-200 p-2 overflow-auto rounded-md">
+            <h2 class="ml-4 text-green-700">Logs:</h2>
+            {% if messages %}
+            <div>
+              {% for message in messages %}
+              <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-span-2">
+          csv download aqui
+        </div>
+      </section>
 		</div>
 	</body>
 </html>
